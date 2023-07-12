@@ -6,7 +6,6 @@ import Progress from "./components/Progress";
 import Info from "./components/Info";
 import { getInitialState, getFeedback } from "./util";
 
-
 class App extends Component {
   state = getInitialState();
 

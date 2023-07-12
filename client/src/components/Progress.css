@@ -1,0 +1,15 @@
+.progress-bar__history {
+  display: block;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  min-height: 30px;
+  padding: 5px;
+  list-style: none;
+  color: #000;
+  font-size: 24px;
+}
+.progress-bar__history li {
+  padding: 2px;
+  border-radius: 5px;
+  display: block;
+}

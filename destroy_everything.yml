@@ -1,0 +1,84 @@
+- name: Delete resources created by previous playbook
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+    - group_vars/env
+  vars:
+    ansible_python_interpreter: /opt/homebrew/bin/python3
+
+  tasks:
+  - name: Get server IP
+    amazon.aws.ec2_instance_info:
+      filters:
+        "tag:Name": "{{ server_name }}"
+    register: ec2_data
+  
+  - name: Terminate server
+    amazon.aws.ec2_instance:
+      instance_ids: "{{ ec2_data.instances[0].instance_id }}"
+      region: "{{ aws_region }}"
+      state: absent
+    
+  - name: Get VPC info
+    amazon.aws.ec2_vpc_net_info:
+      region: "{{ aws_region }}"
+      filters:
+        "tag:Name": "{{ vpc_name }}"
+    register: vpc
+  
+  - name: Get security group info
+    amazon.aws.ec2_group_info:
+      filters:
+        "tag:Name": "{{ vpc_name }}"
+      region: "{{ aws_region }}"
+    register: sg_info
+
+  - name: Get list of route tables
+    ec2_vpc_route_table_info:
+      filters:
+        "tag:Name": "{{ vpc_name }}_public_rt"
+    register: route_table
+
+  - name: Get subnet info
+    amazon.aws.ec2_vpc_subnet_info:
+      region: "{{ aws_region }}"
+      filters:
+        "tag:Name": "{{ vpc_name }}"
+    register: subnets_list
+
+  - name: Delete security group
+    amazon.aws.ec2_group:
+      name: "{{ vpc_name }} VPC SG"
+      region: "{{ aws_region }}"
+      state: absent
+
+  - name: Delete IGW
+    amazon.aws.ec2_vpc_igw:
+      vpc_id: "{{ vpc.vpcs[0].id }}"
+      region: "{{ aws_region }}"
+      state: absent
+      tags:
+        Name: "{{ vpc_name }}_igw"
+
+  - name: Delete subnet
+    amazon.aws.ec2_vpc_subnet:
+      vpc_id: "{{vpc.vpcs[0].id}}"
+      region: "{{ aws_region }}"
+      cidr: "{{ subnet_cidr }}"
+      state: absent
+
+  - name: Delete route table
+    amazon.aws.ec2_vpc_route_table:
+      route_table_id: "{{ route_table.route_tables[0].id }}"
+      vpc_id: "{{ vpc.vpcs[0].id }}"
+      region: "{{ aws_region }}"
+      lookup: id
+      state: absent
+  
+  - name: Delete VPC
+    amazon.aws.ec2_vpc_net:
+      vpc_id: "{{ vpc.vpcs[0].id }}"
+      region: "{{ aws_region }}"
+      cidr_block: "{{ network }}"
+      state: absent

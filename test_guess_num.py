@@ -3,7 +3,6 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.core.utils import ChromeType
 import time
 
 chrome_options = Options()
@@ -24,7 +23,16 @@ for option in options:
 def test_site():
     print("Starting tests...")
     url = "http://localhost:3000/"
-    se = Service(ChromeDriverManager(chrome_type=ChromeType.GOOGLE).install())
+    try:
+        se = Service(ChromeDriverManager(
+            chrome_type="https://chromedriver.storage.googleapis.com/100.0.4896.20/chromedriver_linux64.zip").install())
+    except:
+        try:
+            se = Service(ChromeDriverManager(
+                chrome_type="https://chromedriver.storage.googleapis.com/99.0.4844.35/chromedriver_linux64.zip").install())
+        except:
+            se = Service(ChromeDriverManager(
+                chrome_type="https://chromedriver.storage.googleapis.com/98.0.4758.48/chromedriver_linux64.zip").install())
     driver = webdriver.Chrome(service=se, options=chrome_options)
     print("Browser started successfully")
     driver.get(url)

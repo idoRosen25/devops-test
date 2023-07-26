@@ -33,4 +33,4 @@ jobs:
           script_stop: true
           script: |
             cd /opt/app
-            sudo docker-compose pull yan07/devops-test-final:latest && sudo docker-compose up -d --force-recreate
+            sudo docker compose pull react-app && sudo docker-compose up -d --force-recreate

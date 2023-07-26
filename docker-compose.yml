@@ -1,6 +1,7 @@
 version: '3'
 services:
   react-app:
+    image: devops-test-final
     build:
       context: .
       dockerfile: Dockerfile

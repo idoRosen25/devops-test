@@ -181,8 +181,8 @@
         chdir: /opt/app
       with_items:
         - docker login -u {{ docker_username }} -p {{ docker_token }}
-        - docker build . --tag {{ docker_username }}/devops-test:latest
-        - docker push {{ docker_username }}/devops-test:latest
+        - docker build . --tag {{ docker_username }}/{{ project_name }}:latest
+        - docker push {{ docker_username }}/{{ project_name }}:latest
 
     - name: Start docker app
       shell: docker-compose up -d

@@ -14,7 +14,7 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Build
-        run: docker build --no-cache -t ${{ secrets.DOCKER_USERNAME }}/${{secrets.PROJECT}}:latest .
+        run: docker build . -t ${{ secrets.DOCKER_USERNAME }}/${{secrets.PROJECT}}:latest
         
       - name: Push
         run: docker push ${{ secrets.DOCKER_USERNAME }}/${{secrets.PROJECT}}:latest

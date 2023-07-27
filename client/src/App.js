@@ -47,7 +47,7 @@ class App extends Component {
             </div>
             <Form block={block} returnGuessToApp={value => this.updateAppState(value)} />
             <Progress feedbackMessage={feedbackMessage} attempt={attempt} guessList={guessList} />
-            {/* commented for feature testing */}
+            
              <Button style={{ margin: '40px 0 20px' }} fullWidth variant="contained" color="secondary" onClick={this.resetGame} id='reset_game_btn'>Reset Game</Button>
             <Info show={show} onClose={this.handleClose} />
           </Paper>

@@ -6,4 +6,3 @@ services:
       dockerfile: Dockerfile
     ports:
       - '80:3000'
-    image: yan07/devops-test-final:latest

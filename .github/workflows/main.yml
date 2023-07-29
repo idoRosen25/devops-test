@@ -33,4 +33,4 @@ jobs:
           script_stop: true
           script: |
             cd /opt/app
-            sudo docker-compose pull && sudo docker-compose up -d --force-recreate
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{secrets.PROJECT}}:latest && sudo docker-compose up -d --force-recreate

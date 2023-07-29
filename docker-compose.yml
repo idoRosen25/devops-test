@@ -1,6 +1,7 @@
 version: '3'
 services:
   react-app:
+    image: yan07/devops-final-test
     build:
       context: .
       dockerfile: Dockerfile
